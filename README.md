@@ -15,7 +15,7 @@ A context-aware Retrieval-Augmented Generation (RAG) system built from scratch. 
 - **Python Environment**: Managed entirely by [uv](https://github.com/astral-sh/uv)
 - **Framework**: [LangChain](https://python.langchain.com/) (using pure LCEL `langchain_core`)
 - **Vector Database**: [ChromaDB](https://www.trychroma.com/)
-- **Embedding & Generation Models**: [Ollama](https://ollama.ai/) (Default configured for `nomic-embed-text` and `qwen2.5:7b`)
+- **Embedding & Generation Models**: [Ollama](https://ollama.ai/) (Default configured for `nomic-embed-text:latest` and `qwen2.5:7b`)
 
 ## 📋 Prerequisites
 
