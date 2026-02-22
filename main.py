@@ -1,6 +1,33 @@
 import sys
+import threading
+import itertools
+import time
 from src.rag_pipeline import RAGPipeline
 
+class Spinner:
+    def __init__(self, message="Thinking"):
+        self.message = message
+        self.spinner_chars = itertools.cycle(['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'])
+        self.stop_running = threading.Event()
+        self.spinner_thread = None
+
+    def start(self):
+        self.stop_running.clear()
+        self.spinner_thread = threading.Thread(target=self.spin)
+        self.spinner_thread.start()
+
+    def spin(self):
+        while not self.stop_running.is_set():
+            sys.stdout.write(f'\r{self.message} {next(self.spinner_chars)}')
+            sys.stdout.flush()
+            time.sleep(0.1)
+
+    def stop(self):
+        self.stop_running.set()
+        if self.spinner_thread:
+            self.spinner_thread.join()
+        sys.stdout.write('\r' + ' ' * (len(self.message) + 4) + '\r')
+        sys.stdout.flush()
 def main():
     print("Initializing Advanced Context-Aware RAG Pipeline...")
     try:
@@ -25,10 +52,24 @@ def main():
             if not user_input.strip():
                 continue
 
-            print("Thinking...")
-            response = pipeline.query(user_input)
+            spinner = Spinner("Thinking")
+            spinner.start()
 
-            print(f"\nAI: {response['answer']}")
+            try:
+                response = pipeline.query_stream(user_input)
+                answer_stream = response["answer_stream"]
+
+                first_chunk = next(answer_stream, None)
+            finally:
+                spinner.stop()
+
+            print("\nAI: ", end="", flush=True)
+            if first_chunk:
+                print(first_chunk, end="", flush=True)
+            for chunk in answer_stream:
+                print(chunk, end="", flush=True)
+            print()
+
             print("\nSources:")
             if "context" in response and response["context"]:
                 seen_sources = set()
