@@ -135,8 +135,8 @@ Question: {input}""")
         else:
             print("No new documents to add/seed.")
 
-    def query(self, user_input: str) -> dict:
+    def query_stream(self, user_input: str) -> dict:
         # Retrieve source docs separately so we can display them in the CLI
         source_docs = self.retriever.invoke(user_input)
-        answer = self.rag_chain.invoke({"input": user_input})
-        return {"answer": answer, "context": source_docs}
+        answer_stream = self.rag_chain.stream({"input": user_input})
+        return {"answer_stream": answer_stream, "context": source_docs}
