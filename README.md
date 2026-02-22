@@ -1,6 +1,6 @@
-# Advanced Context-Aware RAG System
+# Context-Aware RAG System
 
-An advanced, highly context-aware Retrieval-Augmented Generation (RAG) system built from scratch. This project is designed to ingest local documents (PDFs, Text, Markdown), generate vector embeddings, store them in a local ChromaDB instance, and answer user queries with precise source citations using local open-source LLMs via Ollama.
+A context-aware Retrieval-Augmented Generation (RAG) system built from scratch. This project is designed to ingest local documents (PDFs, Text, Markdown), generate vector embeddings, store them in a local ChromaDB instance, and answer user queries with precise source citations using local open-source LLMs via Ollama.
 
 ## 🚀 Features
 
